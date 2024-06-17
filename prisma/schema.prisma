@@ -22,3 +22,14 @@ model Produto {
   categoria   Categoria     @relation(fields: [categoriaId], references: [id])
   carrinho    CarrinhoProduto[] // Relacionamento de muitos para muitos com Carrinho
 }
+
+model CarrinhoProduto {
+  produtoId  Int
+  carrinhoId Int
+  quantidade Int
+
+  produto    Produto  @relation(fields: [produtoId], references: [id])
+  carrinho   Carrinho @relation(fields: [carrinhoId], references: [id])
+
+  @@id([produtoId, carrinhoId]) // Chave primária composta
+}
