@@ -23,6 +23,12 @@ model Produto {
   carrinho    CarrinhoProduto[] // Relacionamento de muitos para muitos com Carrinho
 }
 
+model Carrinho {
+  id         Int               @id @default(autoincrement())
+  usuarioId  Int
+  produtos   CarrinhoProduto[] // Relacionamento de muitos para muitos com Produto
+}
+
 model CarrinhoProduto {
   produtoId  Int
   carrinhoId Int
