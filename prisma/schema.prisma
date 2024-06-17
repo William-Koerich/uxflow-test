@@ -12,3 +12,13 @@ model Categoria {
   nome     String
   produtos Produto[] // Relacionamento de 1 para muitos com Produto
 }
+
+model Produto {
+  id          Int           @id @default(autoincrement())
+  nome        String
+  descricao   String?
+  preco       Float
+  categoriaId Int
+  categoria   Categoria     @relation(fields: [categoriaId], references: [id])
+  carrinho    CarrinhoProduto[] // Relacionamento de muitos para muitos com Carrinho
+}
