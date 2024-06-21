@@ -1,41 +1,35 @@
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+model Usuario {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  senha String
 }
 
-generator client {
-  provider = "prisma-client-js"
+model Produto {
+  id          Int       @id @default(autoincrement())
+  nome        String
+  descricao   String
+  preco       Float
+  categoriaId Int
+  categoria   Categoria @relation(fields: [categoriaId], references: [id])
 }
 
 model Categoria {
   id       Int       @id @default(autoincrement())
   nome     String
-  produtos Produto[] // Relacionamento de 1 para muitos com Produto
-}
-
-model Produto {
-  id          Int           @id @default(autoincrement())
-  nome        String
-  descricao   String?
-  preco       Float
-  categoriaId Int
-  categoria   Categoria     @relation(fields: [categoriaId], references: [id])
-  carrinho    CarrinhoProduto[] // Relacionamento de muitos para muitos com Carrinho
+  produtos Produto[]
 }
 
 model Carrinho {
-  id         Int               @id @default(autoincrement())
-  usuarioId  Int
-  produtos   CarrinhoProduto[] // Relacionamento de muitos para muitos com Produto
+  id       Int              @id @default(autoincrement())
+  produtos CarrinhoProduto[]
 }
 
 model CarrinhoProduto {
-  produtoId  Int
   carrinhoId Int
+  produtoId  Int
   quantidade Int
-
-  produto    Produto  @relation(fields: [produtoId], references: [id])
   carrinho   Carrinho @relation(fields: [carrinhoId], references: [id])
+  produto    Produto  @relation(fields: [produtoId], references: [id])
 
-  @@id([produtoId, carrinhoId]) // Chave primária composta
+  @@id([carrinhoId, produtoId])
 }
